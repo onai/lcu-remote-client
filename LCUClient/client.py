@@ -23,7 +23,7 @@ class LCUClient(object):
             lcu_announce=LcuAnnounce(id=id, description=description)
         )
         msg_bytes = proto_msg.SerializeToString()
-        self.conn.send(msg_bytes)
+        self.send(msg_bytes)
         response = self.recv()
         return LcuResponseMessage.FromString(response)
 
@@ -52,6 +52,20 @@ class LCUClient(object):
             pos += n
 
         return bytes(buf)
+    
+    def send(self, message):
+        '''
+        Sends a message using the aardant wire protocol to the wallet
+        '''
+        message_length = len(message)
+        message_length_bytes = message_length.to_bytes(
+            AARDANT_MESSAGE_LENGTH_BYTES,
+            AARDANT_MESSAGE_LENGTH_ENDIAN
+        )
+        
+        self.conn.sendall(message_length_bytes)
+        self.conn.sendall(message)
+
 
 
 if __name__ == "__main__":
