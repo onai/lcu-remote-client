@@ -4,9 +4,9 @@ This library functions as a proxy for interfacing with a remote LCU. Currently, 
 It can be called like so:
 ```
 from LCUClient import client
-c = client.LCUClient()
+c = client.LCUClient("34.136.227.69:8000")
 id = "9912-30042" # identifier string
-description = "An example of invocation of the registration method"
+description = "Mass Spectrometer"
 result = c.register(id, description)
 ```
 
