@@ -1,6 +1,8 @@
 # LCU Remote Client Library
 
 This library functions as a proxy for interfacing with a remote LCU. Currently, the method to register an item is implemented.
+It can be installed with `pip install dist/LCUClient-0.1.0-py3-none-any.whl`.
+
 It can be called like so:
 ```
 from LCUClient import client
