@@ -10,8 +10,7 @@ setup(
     license="BSD 2-clause",
     packages=["LCUClient"],
     install_requires=[
-        "mpi4py>=2.0",
-        "numpy",
+        "protobuf",
     ],
     classifiers=[
         "Development Status :: 1 - Planning",
