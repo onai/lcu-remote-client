@@ -16,7 +16,15 @@ class LCUClient(object):
     def status(self):
         pass
 
-    def message(self, id: str, message: str):
+    def register(self, id: str, message: str):
+        """
+        Register a resource on the network
+
+        :param id: The ID of the resource, str
+        :param message: The registration message, str
+
+        :returns: LcuResponseMessage indicating registration success
+        """
         id = StringValue(value=id)
         description = StringValue(value=message)
         proto_msg = LcuClientMessage(
@@ -35,13 +43,14 @@ class LCUClient(object):
 
     def recv(self):
         """
-        Sends a message using the aardant wire protocol from the connection to the wallet
+        Receives a response using the aardant wire protocol from the connection to the remote LCU.
+
+        :returns: bytes, the received data
         """
         message_length_bytes = self.conn.recv(AARDANT_MESSAGE_LENGTH_BYTES)
         message_length = int.from_bytes(
             message_length_bytes, AARDANT_MESSAGE_LENGTH_ENDIAN
         )
-        print(message_length)
 
         buf = bytearray(message_length)
         pos = 0
@@ -52,22 +61,22 @@ class LCUClient(object):
             pos += n
 
         return bytes(buf)
-    
+
     def send(self, message):
-        '''
-        Sends a message using the aardant wire protocol to the wallet
-        '''
+        """
+        Sends a message using the aardant wire protocol to the remote LCU
+
+        :param message: str A message to send
+        """
         message_length = len(message)
         message_length_bytes = message_length.to_bytes(
-            AARDANT_MESSAGE_LENGTH_BYTES,
-            AARDANT_MESSAGE_LENGTH_ENDIAN
+            AARDANT_MESSAGE_LENGTH_BYTES, AARDANT_MESSAGE_LENGTH_ENDIAN
         )
-        
+
         self.conn.sendall(message_length_bytes)
         self.conn.sendall(message)
 
 
-
 if __name__ == "__main__":
     c = LCUClient()
-    print(c.message("231-22342-2342-2342", "healthcheck"))
+    print(c.register("231-22342-2342-2342", "healthcheck"))
