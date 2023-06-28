@@ -1,5 +1,5 @@
 import socket
-from .lcu_pb2 import LcuAnnounce, LcuClientMessage, LcuResponseMessage, Success
+from lcu_pb2 import LcuAnnounce, LcuClientMessage, LcuResponseMessage, Success
 from google.protobuf.wrappers_pb2 import StringValue
 
 AARDANT_MESSAGE_LENGTH_BYTES = 4
@@ -52,3 +52,8 @@ class LCUClient(object):
             pos += n
 
         return bytes(buf)
+
+
+if __name__ == "__main__":
+    c = LCUClient()
+    print(c.message("231-22342-2342-2342", "healthcheck"))
