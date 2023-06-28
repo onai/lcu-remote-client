@@ -7,10 +7,16 @@ AARDANT_MESSAGE_LENGTH_ENDIAN = "big"
 
 
 class LCUClient(object):
-    def __init__(self):
+    def __init__(self, address):
+        """
+        Initialize with address of remote LCU
+
+        :param address: The remote address in the form of IP:Port
+        """
         self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip_address = "34.136.227.69"
-        self.port = 8000
+        address_components = address.split(":")
+        self.ip_address = address_components[0]
+        self.port = int(address_components[1])
         self.conn.connect((self.ip_address, self.port))
 
     def status(self):
