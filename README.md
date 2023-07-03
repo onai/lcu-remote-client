@@ -10,6 +10,7 @@ c = client.LCUClient("34.136.227.69:8000")
 id = "9912-30042" # identifier string
 description = "Mass Spectrometer"
 result = c.register(id, description)
+print(c.status())
 ```
 
 The response is a message indicating successful invocation of the remote method.

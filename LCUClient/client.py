@@ -1,5 +1,12 @@
 import socket
-from .lcu_pb2 import LcuAnnounce, LcuClientMessage, LcuResponseMessage, Success
+from .lcu_pb2 import (
+    LcuAnnounce,
+    LcuClientMessage,
+    LcuResponseMessage,
+    Success,
+    LcuStatus,
+    LcuStatusRequest,
+)
 from google.protobuf.wrappers_pb2 import StringValue
 
 AARDANT_MESSAGE_LENGTH_BYTES = 4
@@ -20,7 +27,13 @@ class LCUClient(object):
         self.conn.connect((self.ip_address, self.port))
 
     def status(self):
-        pass
+        status_req = LcuStatusRequest()
+        proto_msg = LcuClientMessage(lcu_status_req=status_req)
+        msg_bytes = proto_msg.SerializeToString()
+        self.send(msg_bytes)
+        response = self.recv()
+        lcu_status_response = LcuResponseMessage.FromString(response)
+        return lcu_status_response.lcu_status
 
     def register(self, id: str, message: str):
         """
